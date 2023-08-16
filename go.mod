@@ -1,4 +1,4 @@
-module gitea.svc.boardware.com/bwc/core-api
+module github.com/boardware-cloud/core-api
 
 go 1.20
 
