@@ -6,96 +6,107 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Totp struct {
-	Url string `json:"url"`
+type PutTotpRequest struct {
+	VerificationCode string `json:"verificationCode"`
 }
 type Session struct {
-	Token       string        `json:"token"`
-	TokenType   string        `json:"tokenType"`
-	TokenFormat string        `json:"tokenFormat"`
 	ExpiredAt   int64         `json:"expiredAt"`
 	CreatedAt   int64         `json:"createdAt"`
 	Status      SessionStatus `json:"status"`
 	Account     Account       `json:"account"`
+	Token       string        `json:"token"`
+	TokenType   string        `json:"tokenType"`
+	TokenFormat string        `json:"tokenFormat"`
 }
-type Pagination struct {
-	Total int64 `json:"total"`
-	Index int64 `json:"index"`
-	Limit int64 `json:"limit"`
-}
-type CreateVerificationCodeRequest struct {
-	Email   *string                 `json:"email,omitempty"`
-	Purpose VerificationCodePurpose `json:"purpose"`
-}
-type CreateAccountRequest struct {
-	Role             *Role   `json:"role,omitempty"`
-	VerificationCode *string `json:"verificationCode,omitempty"`
-	Email            string  `json:"email"`
-	Password         string  `json:"password"`
+type CreateServiceRequest struct {
+	Url         string      `json:"url"`
+	Type        ServiceType `json:"type"`
+	Name        string      `json:"name"`
+	Title       string      `json:"title"`
+	Description string      `json:"description"`
 }
 type SessionVerification struct {
 	Status SessionStatus `json:"status"`
-}
-type AccountList struct {
-	Data       []Account  `json:"data"`
-	Pagination Pagination `json:"pagination"`
-}
-type Service struct {
-	Id          string      `json:"id"`
-	Name        string      `json:"name"`
-	Title       string      `json:"title"`
-	Description string      `json:"description"`
-	Url         string      `json:"url"`
-	Type        ServiceType `json:"type"`
-}
-type CreateServiceRequest struct {
-	Name        string      `json:"name"`
-	Title       string      `json:"title"`
-	Description string      `json:"description"`
-	Url         string      `json:"url"`
-	Type        ServiceType `json:"type"`
-}
-type ServiceList struct {
-	Pagination Pagination `json:"pagination"`
-	Data       []Service  `json:"data"`
-}
-type UpdatePasswordRequest struct {
-	Password         *string `json:"password,omitempty"`
-	NewPassword      string  `json:"newPassword"`
-	Email            string  `json:"email"`
-	VerificationCode *string `json:"verificationCode,omitempty"`
-}
-type CreateSessionRequest struct {
-	Email    string  `json:"email"`
-	Password string  `json:"password"`
-	TotpCode *string `json:"totpCode,omitempty"`
-}
-type Account struct {
-	Id    string `json:"id"`
-	Email string `json:"email"`
-	Role  Role   `json:"role"`
-}
-type CreateVerificationCodeRespones struct {
-	Email   *string                 `json:"email,omitempty"`
-	Purpose VerificationCodePurpose `json:"purpose"`
-	Result  VerificationCodeResult  `json:"result"`
-}
-type PutTotpRequest struct {
-	VerificationCode string `json:"verificationCode"`
 }
 type Error struct {
 	StatusCode int64  `json:"statusCode"`
 	Code       int64  `json:"code"`
 	Message    string `json:"message"`
 }
+type CreateVerificationCodeRequest struct {
+	Email   *string                 `json:"email,omitempty"`
+	Purpose VerificationCodePurpose `json:"purpose"`
+}
+type CreateSessionRequest struct {
+	TotpCode *string `json:"totpCode,omitempty"`
+	Email    *string `json:"email,omitempty"`
+	Password *string `json:"password,omitempty"`
+}
+type Totp struct {
+	Url string `json:"url"`
+}
+type Pagination struct {
+	Index int64 `json:"index"`
+	Limit int64 `json:"limit"`
+	Total int64 `json:"total"`
+}
+type CreateAccountRequest struct {
+	Password         string  `json:"password"`
+	Role             *Role   `json:"role,omitempty"`
+	VerificationCode *string `json:"verificationCode,omitempty"`
+	Email            string  `json:"email"`
+}
+type Account struct {
+	Id    string `json:"id"`
+	Email string `json:"email"`
+	Role  Role   `json:"role"`
+}
+type Service struct {
+	Description string      `json:"description"`
+	Url         string      `json:"url"`
+	Type        ServiceType `json:"type"`
+	Id          string      `json:"id"`
+	Name        string      `json:"name"`
+	Title       string      `json:"title"`
+}
+type AccountList struct {
+	Data       []Account  `json:"data"`
+	Pagination Pagination `json:"pagination"`
+}
+type ServiceList struct {
+	Data       []Service  `json:"data"`
+	Pagination Pagination `json:"pagination"`
+}
 type SessionVerificationRequest struct {
 	Token string `json:"token"`
 }
+type UpdatePasswordRequest struct {
+	Email            string  `json:"email"`
+	VerificationCode *string `json:"verificationCode,omitempty"`
+	Password         *string `json:"password,omitempty"`
+	NewPassword      string  `json:"newPassword"`
+}
+type CreateVerificationCodeRespones struct {
+	Result  VerificationCodeResult  `json:"result"`
+	Email   *string                 `json:"email,omitempty"`
+	Purpose VerificationCodePurpose `json:"purpose"`
+}
+type ServiceType string
+
+const IAAS ServiceType = "IAAS"
+const PAAS ServiceType = "PAAS"
+const SAAS ServiceType = "SAAS"
+
 type VerificationCodeResult string
 
 const SUCCESS_CREATED VerificationCodeResult = "SUCCESS_CREATED"
 const FREQUENT VerificationCodeResult = "FREQUENT"
 const ACCOUNT_EXISTS VerificationCodeResult = "ACCOUNT_EXISTS"
+
+type Ordering string
+
+const ASCENDING Ordering = "ASCENDING"
+const DESCENDING Ordering = "DESCENDING"
 
 type Role string
 
@@ -103,16 +114,12 @@ const ROOT Role = "ROOT"
 const ADMIN Role = "ADMIN"
 const USER Role = "USER"
 
-type ServiceType string
+type SessionStatus string
 
-const IAAS ServiceType = "IAAS"
-const PAAS ServiceType = "PAAS"
-const SAAS ServiceType = "SAAS"
-
-type Ordering string
-
-const ASCENDING Ordering = "ASCENDING"
-const DESCENDING Ordering = "DESCENDING"
+const ACTIVED SessionStatus = "ACTIVED"
+const TOTP_2FA SessionStatus = "TOTP_2FA"
+const EXPIRED SessionStatus = "EXPIRED"
+const DISACTIVED SessionStatus = "DISACTIVED"
 
 type VerificationCodePurpose string
 
@@ -120,13 +127,6 @@ const CREATE_ACCOUNT VerificationCodePurpose = "CREATE_ACCOUNT"
 const SET_PASSWORD VerificationCodePurpose = "SET_PASSWORD"
 const SIGNIN VerificationCodePurpose = "SIGNIN"
 const CREATE_2FA VerificationCodePurpose = "CREATE_2FA"
-
-type SessionStatus string
-
-const ACTIVED SessionStatus = "ACTIVED"
-const TOTP_2FA SessionStatus = "TOTP_2FA"
-const EXPIRED SessionStatus = "EXPIRED"
-const DISACTIVED SessionStatus = "DISACTIVED"
 
 type AccountApiInterface interface {
 	GetAccount(gin_context *gin.Context)
