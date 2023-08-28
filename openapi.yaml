@@ -384,6 +384,7 @@ components:
     Session:
       type: object
       required:
+        - status
         - account
         - token
         - tokenType
