@@ -26,6 +26,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /account/totp:
+    put:
+      tags:
+        - Account
+      description: Create or Update 2FA of TOTP
+      operationId: CreateTotp2FA
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutTotpRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Totp'
   /account/session:
     post:
       tags:
@@ -57,6 +75,12 @@ paths:
       responses:
         '204':
           description: 'Updated'
+        '403':
+          description: 'Fail'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /accounts:
     post:
       tags:
@@ -75,6 +99,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        '403':
+          description: 'Verification Code error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     get:
       tags:
         - Account
@@ -153,8 +183,27 @@ paths:
                 $ref: '#/components/schemas/CreateVerificationCodeRespones'
         '409':
           description: 'Failed create verification code'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      required:
+        - statusCode
+        - code
+        - message
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+        code:
+          type: integer
+          format: int64
+        message:
+          type: string
     SessionVerificationRequest:
       description: 'Session verification request'
       type: object
@@ -168,7 +217,7 @@ components:
       enum: [SUCCESS_CREATED,FREQUENT,ACCOUNT_EXISTS]
     VerificationCodePurpose:
       type: string
-      enum: [CREATE_ACCOUNT,SET_PASSWORD]
+      enum: [CREATE_ACCOUNT,SET_PASSWORD,SIGNIN,CREATE_2FA]
     CreateVerificationCodeRequest:
       type: object
       required:
@@ -215,6 +264,8 @@ components:
           type: string
         password:
           type: string
+        oneTimePassword:
+          type: string
     CreateAccountRequest:
       description: 'Create account request schema'
       required:
@@ -259,6 +310,20 @@ components:
             $ref: '#/components/schemas/Account'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    PutTotpRequest:
+      type: object
+      required:
+        - verificationCode
+      properties:
+        verificationCode:
+          type: string
+    Totp:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
     Service:
       type: object
       required:
