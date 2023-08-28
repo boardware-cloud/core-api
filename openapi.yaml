@@ -264,7 +264,7 @@ components:
           type: string
         password:
           type: string
-        oneTimePassword:
+        totpCode:
           type: string
     CreateAccountRequest:
       description: 'Create account request schema'
@@ -391,6 +391,8 @@ components:
         - expiredAt
         - createdAt
       properties:
+        status:
+          $ref: '#/components/schemas/SessionStatus'
         account:
           $ref: '#/components/schemas/Account'
         token:
@@ -409,7 +411,7 @@ components:
           format: int64
     SessionStatus:
       type: string
-      enum: ['ACTIVED', 'EXPIRED', 'DISACTIVED']
+      enum: ['ACTIVED', '2FA','EXPIRED', 'DISACTIVED']
     SessionVerification:
       required:
         - status
