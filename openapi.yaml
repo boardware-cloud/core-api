@@ -409,7 +409,7 @@ components:
           format: int64
     SessionStatus:
       type: string
-      enum: ['ACTIVED', 'TOTP_2FA','EXPIRED', 'DISACTIVED']
+      enum: ['ACTIVED', 'TWO_FA','EXPIRED', 'DISACTIVED']
     SessionVerification:
       required:
         - status
