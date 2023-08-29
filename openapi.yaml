@@ -5,7 +5,7 @@ info:
     BoardWare cloud console api
   contact:
     email: dan.chen@boardware.com
-  version: 0.0.1
+  version: 0.0.3
 servers:
   - url: http://localhost/api/v1
 tags:
@@ -390,6 +390,7 @@ components:
         - tokenFormat
         - expiredAt
         - createdAt
+        - fa
       properties:
         status:
           $ref: '#/components/schemas/SessionStatus'
@@ -409,7 +410,7 @@ components:
         createdAt:
           type: integer
           format: int64
-        FA:
+        fa:
           type: array
           items:
             type: string
