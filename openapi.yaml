@@ -263,6 +263,8 @@ components:
           type: string
         totpCode:
           type: string
+        verificationCode:
+          type: string
     CreateAccountRequest:
       description: 'Create account request schema'
       required:
