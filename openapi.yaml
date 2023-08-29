@@ -409,6 +409,10 @@ components:
         createdAt:
           type: integer
           format: int64
+        FA:
+          type: array
+          items:
+            type: string
     SessionStatus:
       type: string
       enum: ['ACTIVED', 'TWO_FA','EXPIRED', 'DISACTIVED']
