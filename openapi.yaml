@@ -235,7 +235,7 @@ components:
       enum: [SUCCESS_CREATED,FREQUENT,ACCOUNT_EXISTS]
     VerificationCodePurpose:
       type: string
-      enum: [CREATE_ACCOUNT,SET_PASSWORD,SIGNIN,CREATE_2FA]
+      enum: [CREATE_ACCOUNT,SET_PASSWORD,SIGNIN,CREATE_2FA,TICKET]
     CreateVerificationCodeRequest:
       type: object
       required:
