@@ -371,7 +371,9 @@ components:
     PutTotpRequest:
       type: object
       required:
-        - verificationCode
+        - url
+        - totpCode
+        - tickets
       properties:
         url:
           type: string
