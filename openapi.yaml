@@ -304,8 +304,11 @@ components:
     CreateTicketRequest:
       type: object
       required:
+        - email
         - type
       properties:
+        email:
+          type: string
         type:
           $ref: '#/components/schemas/TicketType'
         password:
