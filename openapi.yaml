@@ -5,14 +5,32 @@ info:
     BoardWare cloud console api
   contact:
     email: dan.chen@boardware.com
-  version: 0.0.3
+  version: 0.0.4
 servers:
   - url: http://localhost/api/v1
 tags:
   - name: Account
   - name: Services
   - name: Verification
+  - name: Ticket
 paths:
+  /tickets:
+    post:
+      operationId: CreateTicket
+      tags:
+        - Ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
   /account:
     get:
       tags:
@@ -283,6 +301,29 @@ components:
     Role:
       type: string
       enum: [ROOT, ADMIN, USER]
+    CreateTicketRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/TicketType'
+        password:
+          type: string
+        totpCode:
+          type: string
+        verificationCode:
+          type: string
+    TicketType:
+      type: string
+      enum: [PASSWORD, EMAIL, TOTP]
+    Ticket:
+      type: object
+      properties:
+        token:
+          type: string
+        type:
+          $ref: '#/components/schemas/TicketType'
     Account:
       type: object
       required:
