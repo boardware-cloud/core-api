@@ -283,6 +283,10 @@ components:
           type: string
         verificationCode:
           type: string
+        tickets:
+          type: array
+          items:
+            type: string
     CreateAccountRequest:
       description: 'Create account request schema'
       required:
