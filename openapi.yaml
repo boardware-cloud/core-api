@@ -45,6 +45,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
   /account/totp:
+    get:
+      tags:
+        - Account
+      operationId: GetTotp
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Totp'
     put:
       tags:
         - Account
@@ -362,8 +373,14 @@ components:
       required:
         - verificationCode
       properties:
-        verificationCode:
+        url:
           type: string
+        totpCode:
+          type: string
+        tickets:
+          type: array
+          items:
+            type: string
     Totp:
       type: object
       required:
