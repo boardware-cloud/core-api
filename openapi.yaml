@@ -44,6 +44,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /account/webauthn/sessions/challenge:
+    post:
+      tags:
+        - Account
+      operationId: CreateWebAuthnChallenge
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebAuthnSession'
+  /account/webauthn/sessions/{id}:
+    post:
+      tags:
+        - Account
+      operationId: CreateWebauthn
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialCreationResponse'
+      responses:
+        '204':
+          description: Created
   /account/totp:
     get:
       tags:
@@ -218,6 +249,140 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    WebAuthn:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+        - os
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        os:
+          type: string
+    WebAuthnResponse:
+      type: object
+      required:
+        - attestationObject
+        - clientDataJSON
+      properties:
+        attestationObject:
+          type: string
+        clientDataJSON:
+          type: string
+    CredentialCreationResponse:
+      type: object
+      required:
+        - name
+        - os
+        - id
+        - ticket
+        - response
+        - type
+        - rawId
+        - transports
+      properties:
+        name:
+          type: string
+        os:
+          type: string
+        type: 
+          type: string
+        id:
+          type: string
+        rawId:
+          type: string
+        response:
+          $ref: '#/components/schemas/WebAuthnResponse'
+        transports:
+          type: string
+          items:
+            type: string
+    WebAuthnSession:
+      type: object
+      required:
+        - id
+        - publicKey
+      properties:
+        id:
+          type: string
+        publicKey:
+          $ref: '#/components/schemas/PublicKey'
+    PublicKey:
+      type: object
+      required:
+        - rp
+        - user
+        - challenge
+        - pubKeyCredParams
+        - timeout
+        - authenticatorSelection
+      properties:
+        rp:
+          $ref: '#/components/schemas/Rp'
+        user:
+          $ref: '#/components/schemas/WebauthnUser'
+        challenge:
+          type: string
+        pubKeyCredParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/PubKeyCredParam'
+        timeout:
+          type: integer
+          format: int64
+        authenticatorSelection:
+          $ref: '#/components/schemas/AuthenticatorSelection'
+    AuthenticatorSelection:
+      type: object
+      required:
+        - requireResidentKey
+        - userVerification
+      properties:
+        requireResidentKey:
+          type: boolean
+        userVerification:
+          type: string
+    Rp:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    WebauthnUser:
+      type: object
+      required:
+        - id
+        - name
+        - displayName
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        displayName:
+          type: string
+    PubKeyCredParam:
+      type: object
+      required:
+        - type
+        - alg
+      properties:
+        type:
+          type: string
+        alg:
+          type: integer
+          format: int64
     Error:
       type: object
       required:
