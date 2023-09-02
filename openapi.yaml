@@ -44,6 +44,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /account/webauthn:
+    get:
+      tags:
+        - Account
+      operationId: ListWebAuthn
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebAuthnList'
+  /account/webauthn/{id}:
+    delete:
+      tags:
+        - ACCOUNT
+      operationId: DeleteWebAuthn
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Success
   /account/webauthn/sessions/challenge:
     post:
       tags:
@@ -269,6 +295,10 @@ components:
       properties:
         email:
           type: string
+    WebAuthnList:
+      type: array
+      items:
+        $ref: '#/components/schemas/WebAuthn'
     WebAuthn:
       type: object
       required:
