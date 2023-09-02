@@ -6,94 +6,96 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CreateSessionRequest struct {
-	Email            *string   `json:"email,omitempty"`
-	Password         *string   `json:"password,omitempty"`
-	TotpCode         *string   `json:"totpCode,omitempty"`
-	VerificationCode *string   `json:"verificationCode,omitempty"`
-	Tickets          *[]string `json:"tickets,omitempty"`
-}
-type CredentialCreationResponse struct {
-	Name       string           `json:"name"`
-	Os         string           `json:"os"`
-	Type       string           `json:"type"`
-	Id         string           `json:"id"`
-	RawId      string           `json:"rawId"`
-	Response   WebAuthnResponse `json:"response"`
-	Transports []string         `json:"transports"`
-}
-type PubKeyCredParam struct {
-	Type string `json:"type"`
-	Alg  int64  `json:"alg"`
-}
-type SessionVerificationRequest struct {
-	Token string `json:"token"`
-}
 type CreateTicketRequest struct {
-	TotpCode         *string    `json:"totpCode,omitempty"`
 	VerificationCode *string    `json:"verificationCode,omitempty"`
 	Email            string     `json:"email"`
 	Type             TicketType `json:"type"`
 	Password         *string    `json:"password,omitempty"`
-}
-type Service struct {
-	Title       string      `json:"title"`
-	Description string      `json:"description"`
-	Url         string      `json:"url"`
-	Type        ServiceType `json:"type"`
-	Id          string      `json:"id"`
-	Name        string      `json:"name"`
-}
-type WebAuthnSession struct {
-	Id        string    `json:"id"`
-	PublicKey PublicKey `json:"publicKey"`
-}
-type WebauthnUser struct {
-	Id          string `json:"id"`
-	Name        string `json:"name"`
-	DisplayName string `json:"displayName"`
-}
-type UpdatePasswordRequest struct {
-	VerificationCode *string `json:"verificationCode,omitempty"`
-	Password         *string `json:"password,omitempty"`
-	NewPassword      string  `json:"newPassword"`
-	Email            string  `json:"email"`
-}
-type Pagination struct {
-	Index int64 `json:"index"`
-	Limit int64 `json:"limit"`
-	Total int64 `json:"total"`
-}
-type AuthenticatorSelection struct {
-	RequireResidentKey string `json:"requireResidentKey"`
-	UserVerification   string `json:"userVerification"`
-}
-type CreateAccountRequest struct {
-	VerificationCode *string `json:"verificationCode,omitempty"`
-	Email            string  `json:"email"`
-	Password         string  `json:"password"`
-	Role             *Role   `json:"role,omitempty"`
-}
-type Totp struct {
-	Url string `json:"url"`
-}
-type Rp struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-}
-type Error struct {
-	StatusCode int64  `json:"statusCode"`
-	Code       int64  `json:"code"`
-	Message    string `json:"message"`
+	TotpCode         *string    `json:"totpCode,omitempty"`
 }
 type Account struct {
 	Id    string `json:"id"`
 	Email string `json:"email"`
 	Role  Role   `json:"role"`
 }
-type WebAuthnResponse struct {
-	AttestationObject string `json:"attestationObject"`
-	ClientDataJSON    string `json:"clientDataJSON"`
+type PublicKey struct {
+	PubKeyCredParams       []PubKeyCredParam      `json:"pubKeyCredParams"`
+	Timeout                int64                  `json:"timeout"`
+	AuthenticatorSelection AuthenticatorSelection `json:"authenticatorSelection"`
+	Rp                     Rp                     `json:"rp"`
+	User                   WebauthnUser           `json:"user"`
+	Challenge              string                 `json:"challenge"`
+}
+type PubKeyCredParam struct {
+	Type string `json:"type"`
+	Alg  int64  `json:"alg"`
+}
+type CreateVerificationCodeRequest struct {
+	Email   *string                 `json:"email,omitempty"`
+	Purpose VerificationCodePurpose `json:"purpose"`
+}
+type ServiceList struct {
+	Data       []Service  `json:"data"`
+	Pagination Pagination `json:"pagination"`
+}
+type Session struct {
+	Fa          []string      `json:"fa"`
+	Status      SessionStatus `json:"status"`
+	Account     Account       `json:"account"`
+	Token       string        `json:"token"`
+	TokenType   string        `json:"tokenType"`
+	TokenFormat string        `json:"tokenFormat"`
+	ExpiredAt   int64         `json:"expiredAt"`
+	CreatedAt   int64         `json:"createdAt"`
+}
+type AuthenticatorSelection struct {
+	UserVerification   string `json:"userVerification"`
+	RequireResidentKey string `json:"requireResidentKey"`
+}
+type AccountList struct {
+	Pagination Pagination `json:"pagination"`
+	Data       []Account  `json:"data"`
+}
+type Totp struct {
+	Url string `json:"url"`
+}
+type CreateServiceRequest struct {
+	Url         string      `json:"url"`
+	Type        ServiceType `json:"type"`
+	Name        string      `json:"name"`
+	Title       string      `json:"title"`
+	Description string      `json:"description"`
+}
+type WebAuthnSession struct {
+	Id        string    `json:"id"`
+	PublicKey PublicKey `json:"publicKey"`
+}
+type Error struct {
+	Code       int64  `json:"code"`
+	Message    string `json:"message"`
+	StatusCode int64  `json:"statusCode"`
+}
+type WebAuthn struct {
+	Os        string `json:"os"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	CreatedAt int64  `json:"createdAt"`
+}
+type SessionVerificationRequest struct {
+	Token string `json:"token"`
+}
+type UpdatePasswordRequest struct {
+	Email            string  `json:"email"`
+	VerificationCode *string `json:"verificationCode,omitempty"`
+	Password         *string `json:"password,omitempty"`
+	NewPassword      string  `json:"newPassword"`
+}
+type CreateSessionRequest struct {
+	Email            *string   `json:"email,omitempty"`
+	Password         *string   `json:"password,omitempty"`
+	TotpCode         *string   `json:"totpCode,omitempty"`
+	VerificationCode *string   `json:"verificationCode,omitempty"`
+	Tickets          *[]string `json:"tickets,omitempty"`
 }
 type Ticket struct {
 	Token string     `json:"token"`
@@ -102,59 +104,63 @@ type Ticket struct {
 type SessionVerification struct {
 	Status SessionStatus `json:"status"`
 }
-type WebAuthn struct {
-	Os        string `json:"os"`
-	Id        string `json:"id"`
-	Name      string `json:"name"`
-	CreatedAt int64  `json:"createdAt"`
+type WebauthnUser struct {
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName"`
+}
+type CredentialCreationResponse struct {
+	Os         string           `json:"os"`
+	Type       string           `json:"type"`
+	Id         string           `json:"id"`
+	RawId      string           `json:"rawId"`
+	Response   WebAuthnResponse `json:"response"`
+	Transports []string         `json:"transports"`
+	Name       string           `json:"name"`
+}
+type Rp struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 type CreateVerificationCodeRespones struct {
-	Result  VerificationCodeResult  `json:"result"`
 	Email   *string                 `json:"email,omitempty"`
 	Purpose VerificationCodePurpose `json:"purpose"`
+	Result  VerificationCodeResult  `json:"result"`
 }
-type CreateServiceRequest struct {
+type CreateAccountRequest struct {
+	VerificationCode *string `json:"verificationCode,omitempty"`
+	Email            string  `json:"email"`
+	Password         string  `json:"password"`
+	Role             *Role   `json:"role,omitempty"`
+}
+type PutTotpRequest struct {
+	TotpCode string   `json:"totpCode"`
+	Tickets  []string `json:"tickets"`
+	Url      string   `json:"url"`
+}
+type Service struct {
+	Url         string      `json:"url"`
 	Type        ServiceType `json:"type"`
+	Id          string      `json:"id"`
 	Name        string      `json:"name"`
 	Title       string      `json:"title"`
 	Description string      `json:"description"`
-	Url         string      `json:"url"`
 }
-type CreateVerificationCodeRequest struct {
-	Email   *string                 `json:"email,omitempty"`
-	Purpose VerificationCodePurpose `json:"purpose"`
+type WebAuthnResponse struct {
+	AttestationObject string `json:"attestationObject"`
+	ClientDataJSON    string `json:"clientDataJSON"`
 }
-type PutTotpRequest struct {
-	Url      string   `json:"url"`
-	TotpCode string   `json:"totpCode"`
-	Tickets  []string `json:"tickets"`
+type Pagination struct {
+	Index int64 `json:"index"`
+	Limit int64 `json:"limit"`
+	Total int64 `json:"total"`
 }
-type PublicKey struct {
-	Challenge              string                 `json:"challenge"`
-	PubKeyCredParams       []PubKeyCredParam      `json:"pubKeyCredParams"`
-	Timeout                int64                  `json:"timeout"`
-	AuthenticatorSelection AuthenticatorSelection `json:"authenticatorSelection"`
-	Rp                     Rp                     `json:"rp"`
-	User                   WebauthnUser           `json:"user"`
-}
-type AccountList struct {
-	Data       []Account  `json:"data"`
-	Pagination Pagination `json:"pagination"`
-}
-type ServiceList struct {
-	Pagination Pagination `json:"pagination"`
-	Data       []Service  `json:"data"`
-}
-type Session struct {
-	Status      SessionStatus `json:"status"`
-	Account     Account       `json:"account"`
-	Token       string        `json:"token"`
-	TokenType   string        `json:"tokenType"`
-	TokenFormat string        `json:"tokenFormat"`
-	ExpiredAt   int64         `json:"expiredAt"`
-	CreatedAt   int64         `json:"createdAt"`
-	Fa          []string      `json:"fa"`
-}
+type VerificationCodeResult string
+
+const SUCCESS_CREATED VerificationCodeResult = "SUCCESS_CREATED"
+const FREQUENT VerificationCodeResult = "FREQUENT"
+const ACCOUNT_EXISTS VerificationCodeResult = "ACCOUNT_EXISTS"
+
 type ServiceType string
 
 const IAAS ServiceType = "IAAS"
@@ -168,11 +174,17 @@ const EMAIL TicketType = "EMAIL"
 const TOTP TicketType = "TOTP"
 const WEBAUTHN TicketType = "WEBAUTHN"
 
-type VerificationCodeResult string
+type Ordering string
 
-const SUCCESS_CREATED VerificationCodeResult = "SUCCESS_CREATED"
-const FREQUENT VerificationCodeResult = "FREQUENT"
-const ACCOUNT_EXISTS VerificationCodeResult = "ACCOUNT_EXISTS"
+const ASCENDING Ordering = "ASCENDING"
+const DESCENDING Ordering = "DESCENDING"
+
+type SessionStatus string
+
+const ACTIVED SessionStatus = "ACTIVED"
+const TWO_FA SessionStatus = "TWO_FA"
+const EXPIRED SessionStatus = "EXPIRED"
+const DISACTIVED SessionStatus = "DISACTIVED"
 
 type VerificationCodePurpose string
 
@@ -182,42 +194,25 @@ const SIGNIN VerificationCodePurpose = "SIGNIN"
 const CREATE_2FA VerificationCodePurpose = "CREATE_2FA"
 const TICKET VerificationCodePurpose = "TICKET"
 
-type SessionStatus string
-
-const ACTIVED SessionStatus = "ACTIVED"
-const TWO_FA SessionStatus = "TWO_FA"
-const EXPIRED SessionStatus = "EXPIRED"
-const DISACTIVED SessionStatus = "DISACTIVED"
-
 type Role string
 
 const ROOT Role = "ROOT"
 const ADMIN Role = "ADMIN"
 const USER Role = "USER"
 
-type Ordering string
-
-const ASCENDING Ordering = "ASCENDING"
-const DESCENDING Ordering = "DESCENDING"
-
 type AccountApiInterface interface {
-	GetAccount(gin_context *gin.Context)
 	GetTotp(gin_context *gin.Context)
 	CreateTotp2FA(gin_context *gin.Context, gin_body PutTotpRequest)
-	CreateAccount(gin_context *gin.Context, gin_body CreateAccountRequest)
-	ListAccount(gin_context *gin.Context, ordering Ordering, index int64, limit int64)
-	VerifySession(gin_context *gin.Context, gin_body SessionVerificationRequest)
+	GetAccount(gin_context *gin.Context)
 	CreateWebAuthnChallenge(gin_context *gin.Context)
-	CreateWebauthn(gin_context *gin.Context, id string, gin_body CredentialCreationResponse)
+	CreateWebauthn(gin_context *gin.Context, id string)
 	CreateSession(gin_context *gin.Context, gin_body CreateSessionRequest)
 	UpdatePassword(gin_context *gin.Context, gin_body UpdatePasswordRequest)
+	ListAccount(gin_context *gin.Context, ordering Ordering, index int64, limit int64)
+	CreateAccount(gin_context *gin.Context, gin_body CreateAccountRequest)
+	VerifySession(gin_context *gin.Context, gin_body SessionVerificationRequest)
 }
 
-func GetAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
-	return func(gin_context *gin.Context) {
-		api.GetAccount(gin_context)
-	}
-}
 func GetTotpBuilder(api AccountApiInterface) func(c *gin.Context) {
 	return func(gin_context *gin.Context) {
 		api.GetTotp(gin_context)
@@ -233,32 +228,9 @@ func CreateTotp2FABuilder(api AccountApiInterface) func(c *gin.Context) {
 		api.CreateTotp2FA(gin_context, putTotpRequest)
 	}
 }
-func CreateAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
+func GetAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
 	return func(gin_context *gin.Context) {
-		var createAccountRequest CreateAccountRequest
-		if err := gin_context.ShouldBindJSON(&createAccountRequest); err != nil {
-			gin_context.JSON(400, gin.H{})
-			return
-		}
-		api.CreateAccount(gin_context, createAccountRequest)
-	}
-}
-func ListAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
-	return func(gin_context *gin.Context) {
-		ordering := gin_context.Query("ordering")
-		index := gin_context.Query("index")
-		limit := gin_context.Query("limit")
-		api.ListAccount(gin_context, Ordering(ordering), stringToInt64(index), stringToInt64(limit))
-	}
-}
-func VerifySessionBuilder(api AccountApiInterface) func(c *gin.Context) {
-	return func(gin_context *gin.Context) {
-		var sessionVerificationRequest SessionVerificationRequest
-		if err := gin_context.ShouldBindJSON(&sessionVerificationRequest); err != nil {
-			gin_context.JSON(400, gin.H{})
-			return
-		}
-		api.VerifySession(gin_context, sessionVerificationRequest)
+		api.GetAccount(gin_context)
 	}
 }
 func CreateWebAuthnChallengeBuilder(api AccountApiInterface) func(c *gin.Context) {
@@ -269,12 +241,7 @@ func CreateWebAuthnChallengeBuilder(api AccountApiInterface) func(c *gin.Context
 func CreateWebauthnBuilder(api AccountApiInterface) func(c *gin.Context) {
 	return func(gin_context *gin.Context) {
 		id := gin_context.Param("id")
-		var credentialCreationResponse CredentialCreationResponse
-		if err := gin_context.ShouldBindJSON(&credentialCreationResponse); err != nil {
-			gin_context.JSON(400, gin.H{})
-			return
-		}
-		api.CreateWebauthn(gin_context, id, credentialCreationResponse)
+		api.CreateWebauthn(gin_context, id)
 	}
 }
 func CreateSessionBuilder(api AccountApiInterface) func(c *gin.Context) {
@@ -297,17 +264,45 @@ func UpdatePasswordBuilder(api AccountApiInterface) func(c *gin.Context) {
 		api.UpdatePassword(gin_context, updatePasswordRequest)
 	}
 }
+func ListAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
+	return func(gin_context *gin.Context) {
+		ordering := gin_context.Query("ordering")
+		index := gin_context.Query("index")
+		limit := gin_context.Query("limit")
+		api.ListAccount(gin_context, Ordering(ordering), stringToInt64(index), stringToInt64(limit))
+	}
+}
+func CreateAccountBuilder(api AccountApiInterface) func(c *gin.Context) {
+	return func(gin_context *gin.Context) {
+		var createAccountRequest CreateAccountRequest
+		if err := gin_context.ShouldBindJSON(&createAccountRequest); err != nil {
+			gin_context.JSON(400, gin.H{})
+			return
+		}
+		api.CreateAccount(gin_context, createAccountRequest)
+	}
+}
+func VerifySessionBuilder(api AccountApiInterface) func(c *gin.Context) {
+	return func(gin_context *gin.Context) {
+		var sessionVerificationRequest SessionVerificationRequest
+		if err := gin_context.ShouldBindJSON(&sessionVerificationRequest); err != nil {
+			gin_context.JSON(400, gin.H{})
+			return
+		}
+		api.VerifySession(gin_context, sessionVerificationRequest)
+	}
+}
 func AccountApiInterfaceMounter(gin_router *gin.Engine, gwg_api_label AccountApiInterface) {
-	gin_router.GET("/account", GetAccountBuilder(gwg_api_label))
 	gin_router.GET("/account/totp", GetTotpBuilder(gwg_api_label))
 	gin_router.PUT("/account/totp", CreateTotp2FABuilder(gwg_api_label))
-	gin_router.POST("/accounts", CreateAccountBuilder(gwg_api_label))
-	gin_router.GET("/accounts", ListAccountBuilder(gwg_api_label))
-	gin_router.GET("/accounts/session/verification", VerifySessionBuilder(gwg_api_label))
+	gin_router.GET("/account", GetAccountBuilder(gwg_api_label))
 	gin_router.POST("/account/webauthn/sessions/challenge", CreateWebAuthnChallengeBuilder(gwg_api_label))
 	gin_router.POST("/account/webauthn/sessions/:id", CreateWebauthnBuilder(gwg_api_label))
 	gin_router.POST("/account/session", CreateSessionBuilder(gwg_api_label))
 	gin_router.PUT("/account/password", UpdatePasswordBuilder(gwg_api_label))
+	gin_router.GET("/accounts", ListAccountBuilder(gwg_api_label))
+	gin_router.POST("/accounts", CreateAccountBuilder(gwg_api_label))
+	gin_router.GET("/accounts/session/verification", VerifySessionBuilder(gwg_api_label))
 }
 
 type ServicesApiInterface interface {
