@@ -56,6 +56,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WebAuthnSession'
+  /account/webauthn/sessions/tickets/challenge:
+    post:
+      tags:
+        - Account
+      operationId: CreateWebauthnTicketChallenge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketChallenge'
+      responses:
+        '201':
+          description: Created
   /account/webauthn/sessions/{id}:
     post:
       tags:
@@ -249,6 +262,13 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    CreateTicketChallenge:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
     WebAuthn:
       type: object
       required:
