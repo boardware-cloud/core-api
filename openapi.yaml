@@ -82,6 +82,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WebAuthnSession'
+  /account/webauthn/sessions/tickets/{id}:
+    post:
+      tags:
+        - Account
+      operationId: CreateWebauthnTickets
+      responses:
+        '201':
+          description: Created
   /account/webauthn/sessions/tickets/challenge:
     post:
       tags:
