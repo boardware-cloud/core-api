@@ -59,7 +59,7 @@ paths:
   /account/webauthn/{id}:
     delete:
       tags:
-        - ACCOUNT
+        - Account
       operationId: DeleteWebAuthn
       parameters:
         - in: path
