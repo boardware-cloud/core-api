@@ -44,7 +44,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-  /account/aauthentication:
+  /account/authentication:
     get:
       tags:
         - Account
