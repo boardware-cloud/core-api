@@ -18,7 +18,7 @@ jobs:
 
       # Use the action to generate a client package
       # This uses the default path for the openapi document and thus assumes there is an openapi.json in the current workspace.
-      - name: Generate Angular Client
+      - name: Generate Typescript Client
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           openapi-file: openapi.yaml
@@ -26,6 +26,8 @@ jobs:
           config-file: openapi-ts-config.yml
 
       # Do something with the generated client (likely publishing it somewhere)
+      # npm version $(npm view @boardware-cloud/core-ts-sdk version)
       - name: Do something with the client
         run: |
-          ls
+          cd typescript-fetch-client
+          npm view @boardware-cloud/core-ts-sdk version
