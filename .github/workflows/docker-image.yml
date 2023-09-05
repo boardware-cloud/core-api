@@ -33,5 +33,6 @@ jobs:
           cd typescript-fetch-client
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version --preid=alpha prerelease
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
