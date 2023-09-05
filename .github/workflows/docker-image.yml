@@ -31,8 +31,8 @@ jobs:
           node-version: 18
           scope: "@boardware-cloud"
           registry-url: "https://registry.npmjs.org"
-          #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
-      - run: ls
+        #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
+      - run: ls -al
       - run: |
           cd typescript-fetch-client
           npm version 0.0.15
