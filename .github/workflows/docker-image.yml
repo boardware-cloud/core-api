@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  generate-angular-client:
+    runs-on: ubuntu-latest
+    name: Example
+    steps:
+      # Checkout your code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Generate your OpenAPI document (if you don't write it manually)
+
+      # Use the action to generate a client package
+      # This uses the default path for the openapi document and thus assumes there is an openapi.json in the current workspace.
+      - name: Generate Angular Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          openapi-file: openapi.yaml
+          generator: typescript-fetch
+          config-file: openapi-ts-config.yml
+
+      # Do something with the generated client (likely publishing it somewhere)
+      - name: Do something with the client
+        run: |
+          ls
