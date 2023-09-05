@@ -8,7 +8,7 @@ on:
 jobs:
   generate-angular-client:
     runs-on: ubuntu-latest
-    name: Example
+    name: Publish SDK
     steps:
       # Checkout your code
       - name: Checkout
@@ -30,4 +30,5 @@ jobs:
       - name: Do something with the client
         run: |
           cd typescript-fetch-client
-          npm view @boardware-cloud/core-ts-sdk version
+          npm version $(npm view @boardware-cloud/core-ts-sdk version)
+          npm version
