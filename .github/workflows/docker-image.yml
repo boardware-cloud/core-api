@@ -36,6 +36,5 @@ jobs:
       - run: |
           cd typescript-fetch-client
           npm version 0.0.15
-          # npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
