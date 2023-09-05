@@ -27,13 +27,15 @@ jobs:
       - name: Publish
         uses: actions/setup-node@v3
         with:
+          always-auth: true
           node-version: 18
           scope: "@boardware-cloud"
           registry-url: "https://registry.npmjs.org"
           #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
+      - run: ls
       - run: |
           cd typescript-fetch-client
           npm version 0.0.15
-          npm publish
+          # npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
