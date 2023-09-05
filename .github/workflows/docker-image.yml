@@ -31,4 +31,4 @@ jobs:
         run: |
           cd typescript-fetch-client
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
-          npm version
+          npm version --preid=alpha prerelease
