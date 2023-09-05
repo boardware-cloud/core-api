@@ -24,11 +24,11 @@ jobs:
           openapi-file: openapi.yaml
           generator: typescript-fetch
           config-file: openapi-ts-config.yml
-
-      # Do something with the generated client (likely publishing it somewhere)
-      # npm version $(npm view @boardware-cloud/core-ts-sdk version)
       - name: Publish
-        run: |
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: |
           cd typescript-fetch-client
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version --preid=alpha prerelease
