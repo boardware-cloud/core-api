@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          scope: "@boardware-cloud"
           registry-url: "https://registry.npmjs.org"
           #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
       - run: |
