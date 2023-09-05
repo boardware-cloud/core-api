@@ -32,9 +32,9 @@ jobs:
           scope: "@boardware-cloud"
           registry-url: "https://registry.npmjs.org"
         #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
-      - run: ls -al
-      - run: |
-          cd typescript-fetch-client
-          npm version 0.0.15
+      - run: npm ci
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: |
+          npm version 0.0.15
