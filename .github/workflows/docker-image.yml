@@ -27,8 +27,8 @@ jobs:
 
       # Do something with the generated client (likely publishing it somewhere)
       # npm version $(npm view @boardware-cloud/core-ts-sdk version)
-      - name: Do something with the client
+      - name: Publish
         run: |
           cd typescript-fetch-client
-          npm version $(npm view @boardware-cloud/core-ts-sdk version)
+          npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version
