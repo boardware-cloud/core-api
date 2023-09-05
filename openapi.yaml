@@ -5,7 +5,7 @@ info:
     BoardWare cloud console api
   contact:
     email: dan.chen@boardware.com
-  version: 0.0.11
+  version: 0.0.12
 servers:
   - url: http://localhost/api/v1
 tags:
@@ -598,6 +598,7 @@ components:
         - id
         - email
         - role
+        - hasTotp
       properties:
         id:
           type: string
@@ -605,6 +606,8 @@ components:
           type: string
         role:
           $ref: '#/components/schemas/Role'
+        hasTotp:
+          type: boolean
     Authentication:
       type: object
       required:
