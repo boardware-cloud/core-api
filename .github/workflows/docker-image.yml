@@ -29,10 +29,10 @@ jobs:
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
+          #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
       - run: |
           cd typescript-fetch-client
-          npm version `npm view ${{ vars.NPM_PACKAGE }} version`
-          npm version --preid=alpha prerelease
+          npm version 0.0.15
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
