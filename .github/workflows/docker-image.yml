@@ -18,13 +18,13 @@ jobs:
 
       # Use the action to generate a client package
       # This uses the default path for the openapi document and thus assumes there is an openapi.json in the current workspace.
-      - name: Generate Typescript Client
-        uses: openapi-generators/openapitools-generator-action@v1
-        with:
-          openapi-file: openapi.yaml
-          generator: typescript-fetch
-          config-file: openapi-ts-config.yml
-          command-args: "-o ."
+      #- name: Generate Typescript Client
+      #  uses: openapi-generators/openapitools-generator-action@v1
+      #  with:
+      #    openapi-file: openapi.yaml
+      #    generator: typescript-fetch
+      #    config-file: openapi-ts-config.yml
+      #    command-args: "-o ."
       - name: Publish
         uses: actions/setup-node@v3
         with:
