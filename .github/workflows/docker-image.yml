@@ -34,6 +34,7 @@ jobs:
         #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
       - run: |
           cd typescript-fetch-client
+          echo ${{ secrets.NPM_TOKEN }} > .npmrc
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version --preid=alpha prerelease
           npm publish
