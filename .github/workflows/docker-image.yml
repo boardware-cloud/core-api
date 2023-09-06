@@ -31,6 +31,7 @@ jobs:
           scope: "@boardware"
           node-version: 18
           token: ${{ secrets.NPM_TOKEN }}
+      - run: cat ${{ secrets.NPMRC }} > .npmrc
       - run: npm version `npm view ${{ vars.NPM_PACKAGE }} version` --no-git-tag-version
       - run: npm version --preid=alpha prerelease --no-git-tag-version
       - run: npm publish
