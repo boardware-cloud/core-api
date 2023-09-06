@@ -32,10 +32,8 @@ jobs:
           # scope: "@boardware"
           # registry-url: "https://registry.npmjs.org"
       - run: |
+          cp .npmrc typescript-fetch-client/.npmrc
           cd typescript-fetch-client
-          echo ${{ secrets.NPMRC }} > .npmrc
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version --preid=alpha prerelease
           npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
