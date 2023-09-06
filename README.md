@@ -16,7 +16,7 @@ openapi-generator generate -i openapi.yaml -g go \
 ## Generate typescript SDK
 
 ```bash
-openapi-generator generate -i openapi.yaml -g typescript-fetch -o . \
+openapi-generator generate -i openapi.yaml -g typescript-fetch -o ./ts-sdk \
    --additional-properties=npmName=@boardware/core-ts-sdk
 ```
 
@@ -35,3 +35,7 @@ GOPRIVATE=gitea.svc.boardware.com/bwc/core-api go get -u -f gitea.svc.boardware.
 ```
 openapi-go-generator -o . -p coreapi
 ```
+
+npm version `npm view @boardware/core-ts-sdk version` --no-git-tag-version
+npm version --preid=alpha prerelease --no-git-tag-version
+npm publish

@@ -1,6 +1,6 @@
 {
   "name": "@boardware/core-ts-sdk",
-  "version": "0.0.12",
+  "version": "0.0.23",
   "description": "OpenAPI client for @boardware/core-ts-sdk",
   "author": "OpenAPI-Generator",
   "repository": {
