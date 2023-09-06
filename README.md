@@ -16,8 +16,8 @@ openapi-generator generate -i openapi.yaml -g go \
 ## Generate typescript SDK
 
 ```bash
-openapi-generator generate -i openapi.yaml -g typescript-fetch -o ./ts-sdk \
-   --additional-properties=npmName=@boardware-cloud/core-ts-sdk
+openapi-generator generate -i openapi.yaml -g typescript-fetch -o . \
+   --additional-properties=npmName=@boardware/core-ts-sdk
 ```
 
 ```sql

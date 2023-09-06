@@ -1,1 +1,4 @@
-ts-sdk/
+wwwroot/*.js
+node_modules
+typings
+dist
