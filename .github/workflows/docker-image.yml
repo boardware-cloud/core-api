@@ -33,8 +33,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
         #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
       - run: |
+          mv .npmrc typescript-fetch-client/.npmrc
           cd typescript-fetch-client
-          echo ${{ secrets.NPMRC }} > .npmrc
           npm version `npm view ${{ vars.NPM_PACKAGE }} version`
           npm version --preid=alpha prerelease
           npm publish
