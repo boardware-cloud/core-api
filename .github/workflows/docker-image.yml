@@ -32,8 +32,7 @@ jobs:
           scope: "@boardware-cloud"
           registry-url: "https://registry.npmjs.org"
         #npm version `npm view ${{ vars.NPM_PACKAGE }} version`
-      - run: npm publish --access public
+      - run: |
+          ls
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: |
-          npm version 0.0.15
