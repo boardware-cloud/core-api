@@ -277,31 +277,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Session'
-  /services:
-    post:
-      tags:
-        - Services
-      description: Create service
-      operationId: CreateService
-      responses:
-        '201':
-          description: 'Success created service'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-    get:
-      tags:
-        - Services
-      operationId: ListServices
-      description: List services
-      responses:
-        '200':
-          description: 'Success list services'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceList'
   /verification/code:
     post:
       operationId: CreateVerificationCode
@@ -569,7 +544,7 @@ components:
           $ref: '#/components/schemas/Role'
     Role:
       type: string
-      enum: [ROOT, ADMIN, USER]
+      enum: [ROOT, ADMIN, USER, SUB_ACCOUNT]
     CreateTicketRequest:
       type: object
       required:
@@ -659,63 +634,6 @@ components:
       properties:
         url:
           type: string
-    Service:
-      type: object
-      required:
-        - id
-        - name
-        - type
-        - title
-        - description
-        - url
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-        type:
-          $ref: '#/components/schemas/ServiceType'
-    CreateServiceRequest:
-      type: object
-      required:
-        - name
-        - title
-        - description
-        - url
-        - type
-      properties:
-        name:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-        type:
-          $ref: '#/components/schemas/ServiceType'
-    ServiceType:
-      type: string
-      enum: ['IAAS', 'PAAS', 'SAAS']
-    ServiceList:
-      description: 'Service list'
-      type: object
-      required:
-        - data
-        - pagination
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Service'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     Session:
       type: object
       required:
