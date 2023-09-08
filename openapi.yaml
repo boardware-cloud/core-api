@@ -199,7 +199,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Session'
+                $ref: '#/components/schemas/Token'
   /account/password:
     put:
       tags:
@@ -634,6 +634,21 @@ components:
       properties:
         url:
           type: string
+    Token:
+      type: object
+      required:
+        - secret
+        - tokenType
+        - tokenFormat
+      properties:
+        secret:
+          type: string
+        tokenType:
+          type: string
+          default: Bearer
+        tokenFormat:
+          type: string
+          default: jwt
     Session:
       type: object
       required:
@@ -644,7 +659,6 @@ components:
         - tokenFormat
         - expiredAt
         - createdAt
-        - fa
       properties:
         status:
           $ref: '#/components/schemas/SessionStatus'
@@ -664,13 +678,9 @@ components:
         createdAt:
           type: integer
           format: int64
-        fa:
-          type: array
-          items:
-            type: string
     SessionStatus:
       type: string
-      enum: ['ACTIVED', 'TWO_FA','EXPIRED', 'DISACTIVED']
+      enum: [ACTIVED, EXPIRED, DISACTIVED]
     SessionVerification:
       required:
         - status
