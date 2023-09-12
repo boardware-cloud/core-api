@@ -252,6 +252,7 @@ paths:
         - $ref: '#/components/parameters/Ordering'
         - $ref: '#/components/parameters/IndexParam'
         - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/AccountRoles'
       responses:
         '200':
           description: 'Account created'
@@ -652,26 +653,15 @@ components:
     Session:
       type: object
       required:
+        - id
         - status
-        - account
-        - token
-        - tokenType
-        - tokenFormat
         - expiredAt
         - createdAt
       properties:
+        id:
+          type: string
         status:
           $ref: '#/components/schemas/SessionStatus'
-        account:
-          $ref: '#/components/schemas/Account'
-        token:
-          type: string
-        tokenType:
-          type: string
-          default: Bearer
-        tokenFormat:
-          type: string
-          default: jwt
         expiredAt:
           type: integer
           format: int64
@@ -735,3 +725,12 @@ components:
         type: integer
         minimum: 1
         default: 10
+    AccountRoles:
+      name: roles
+      in: query
+      description: 'Total pages'
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Role'
+    
