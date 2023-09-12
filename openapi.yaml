@@ -138,11 +138,6 @@ paths:
           schema:
             type: string
           required: true
-      # requestBody:
-      #   content:
-      #     application/json:
-      #       schema:
-      #         $ref: '#/components/schemas/CredentialCreationResponse'
       responses:
         '204':
           description: Created
@@ -255,11 +250,23 @@ paths:
         - $ref: '#/components/parameters/AccountRoles'
       responses:
         '200':
-          description: 'Account created'
+          description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountList'
+  /accounts/{id}:
+    get:
+      tags:
+        - Account
+      operationId: GetAccountById
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
   /accounts/session/verification:
     get:
       tags:
