@@ -265,6 +265,8 @@ paths:
       tags:
         - Account
       operationId: GetAccountById
+      parameters:
+        - $ref: '#/components/parameters/ID'
       responses:
         '200':
           description: Success
@@ -715,6 +717,12 @@ components:
           format: int64
           description: 'Total page'
   parameters:
+    ID:
+      in: path
+      name: id
+      schema:
+        type: string
+      required: true
     Ordering:
       name: ordering
       description: 'ASCENDING or DESCENDING'
