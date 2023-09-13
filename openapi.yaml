@@ -248,6 +248,11 @@ paths:
         - $ref: '#/components/parameters/IndexParam'
         - $ref: '#/components/parameters/LimitParam'
         - $ref: '#/components/parameters/AccountRoles'
+        - name: email
+          in: query
+          description: Email
+          schema:
+            type: string
       responses:
         '200':
           description: Created
