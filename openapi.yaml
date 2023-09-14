@@ -286,6 +286,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /accounts/{id}/role:
+    patch:
+      tags:
+        - Account
+      operationId: UpdateUserRole
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
   /accounts/session/verification:
     get:
       tags:
@@ -601,6 +620,13 @@ components:
           type: string
         type:
           $ref: '#/components/schemas/TicketType'
+    UpdateRoleRequest:
+      type: object
+      required:
+        - role
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
     Account:
       type: object
       required:
