@@ -177,7 +177,19 @@ paths:
       responses:
         '204':
           description: Deleted
-  /account/session:
+  /account/sessions:
+    get:
+      tags:
+        - Account
+      description: List session
+      operationId: ListSession
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionList'
     post:
       tags:
         - Account
@@ -664,6 +676,18 @@ components:
         tokenFormat:
           type: string
           default: jwt
+    SessionList:
+      type: object
+      required:
+        - data
+        - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Session'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Session:
       type: object
       required:
