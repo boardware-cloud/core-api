@@ -608,6 +608,7 @@ components:
         - email
         - role
         - hasTotp
+        - registeredOn
       properties:
         id:
           type: string
@@ -617,6 +618,9 @@ components:
           $ref: '#/components/schemas/Role'
         hasTotp:
           type: boolean
+        registeredOn:
+          type: integer
+          format: int64
     Authentication:
       type: object
       required:
